@@ -4,6 +4,8 @@ import {User} from '../models/user'
 import {BadRequestError} from '../errors/bad-request-error'
 import {DatabaseConnectionError} from '../errors/database-connection-error'
 import {RequstValidayionError} from '../errors/request-validation-error'
+import jwt from 'jsonwebtoken'
+import {validationRequest} from '../middlewares/validate-request'
 
 const router = express.Router()
 
@@ -15,12 +17,13 @@ router.post('/api/users/signup', [
         .isLength({ min :4, max: 20 })
         .withMessage('Password between 4 and 20 characters')
 ],
+validationRequest,
 async(req:Request, res: Response) => {
-    const errors = validationResult(req)
+    // const errors = validationResult(req)
 
-    if(!errors.isEmpty()){
-        throw new RequstValidayionError(errors.array())
-    }
+    // if(!errors.isEmpty()){
+    //     throw new RequstValidayionError(errors.array())
+    // }
 
     const {email, password} = req.body
 
@@ -33,6 +36,18 @@ async(req:Request, res: Response) => {
         email, password
     })
     await user.save()
+
+    //Generate JWT
+    const userJwt = jwt.sign({
+        id: user.id,
+        email: user.email
+    }, process.env.jwt_key!)
+
+    //Store on session object
+    req.session = {
+        jwt: userJwt
+    }
+
     res.status(201).send(user)
 })
 
