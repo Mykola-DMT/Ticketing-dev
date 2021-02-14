@@ -1,11 +1,9 @@
 import express, {Request, Response} from 'express'
-import {body, validationResult} from 'express-validator'
-import {User} from '../models/user'
-import {BadRequestError} from '../errors/bad-request-error'
-import {DatabaseConnectionError} from '../errors/database-connection-error'
-import {RequstValidayionError} from '../errors/request-validation-error'
+import {body} from 'express-validator'
 import jwt from 'jsonwebtoken'
-import {validationRequest} from '../middlewares/validate-request'
+import {User} from '../models/user'
+
+import {BadRequestError, validationRequest} from '@mdticketss/common'
 
 const router = express.Router()
 

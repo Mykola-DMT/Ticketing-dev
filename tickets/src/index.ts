@@ -22,7 +22,7 @@ const start = async () => {
     }
 
     app.listen(3000, () => {
-        console.log('Listening(Auth) on 3000...');
+        console.log('Listening(Tickets) on 3000...');
     })
 }
 
