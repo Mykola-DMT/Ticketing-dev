@@ -2,6 +2,8 @@ import request from 'supertest'
 import { app } from '../../app'
 import { createTicketRouter } from '../new'
 
+jest.mock('../../nats-wrapper')
+
 const createTicket = () => {
     return request(app)
         .post('/api/tickets')
