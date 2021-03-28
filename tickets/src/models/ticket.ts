@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import { TodoComment } from 'typescript'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 interface TicketAttrs {
     title: string
@@ -7,20 +8,21 @@ interface TicketAttrs {
     userId: string
 }
 
-interface TicketDoc extends mongoose.Document{
+interface TicketDoc extends mongoose.Document {
     title: string
     price: number
     userId: string
+    version: number
 }
 
-interface TicketModel extends mongoose.Model<any>{
+interface TicketModel extends mongoose.Model<any> {
     build(attrs: TicketAttrs): TicketDoc
 }
 
 const ticketSchema = new mongoose.Schema({
-    title: {type: String, required: true},
-    price: {type: Number, required: true},
-    userId: {type: String, required: true}
+    title: { type: String, required: true },
+    price: { type: Number, required: true },
+    userId: { type: String, required: true }
 }, {
     toJSON: {
         transform(doc, ret) {
@@ -30,10 +32,13 @@ const ticketSchema = new mongoose.Schema({
     }
 })
 
+ticketSchema.set('versionKey', 'version')
+ticketSchema.plugin(updateIfCurrentPlugin)
+
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
     return new Ticket(attrs)
 }
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema)
 
-export {Ticket}
+export { Ticket }
