@@ -1,4 +1,5 @@
 import request from 'supertest'
+import mongoose from 'mongoose'
 import { app } from '../../app'
 import { Ticket } from '../../models/ticket'
 import { Order, OrderStatus } from '../../models/order'
@@ -7,6 +8,7 @@ import { natsWrapper } from '../../nats-wrapper'
 it('marksan order as cencelled', async () => {
     //create a ticket 
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 10
     })
@@ -35,6 +37,7 @@ it('marksan order as cencelled', async () => {
 
 it('emits a order cancelled event', async () => {
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 10
     })
