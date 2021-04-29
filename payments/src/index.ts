@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
-import { OrderCreatedListener } from './events/listeners/order-created-listener'
 import { OrderCancelledListener } from './events/listeners/order-cancelled-listener'
+import { OrderCreatedListener } from './events/listeners/order-created-listener'
 
 const start = async () => {
     if (!process.env.jwt_key) {
@@ -53,7 +53,7 @@ const start = async () => {
     }
 
     app.listen(3000, () => {
-        console.log('Listening(Tickets) on 3000...');
+        console.log('Listening(Payments) on 3000...');
     })
 }
 

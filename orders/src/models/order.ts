@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema({
     }
 })
 
-orderSchema.set('versionKey', 'vresion')
+orderSchema.set('versionKey', 'version')
 orderSchema.plugin(updateIfCurrentPlugin)
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
